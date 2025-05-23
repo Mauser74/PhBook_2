@@ -7,11 +7,6 @@ from os import system, name
 import json
 
 
-#Глобальные переменные
-filename_of_book = 'PhBook.json'        # Файл телефонной книги
-ph_book = []
-
-
 # Очистка экрана в консольном окне
 def cls():
     if name == 'nt':                    # Для windows
@@ -26,11 +21,116 @@ def print_caption(f_pointer):
     print(f'{caption}\n' + '-' * len(caption))
 
 
-# Открытие файла телефонной книги
+
+class PhoneBook:
+    """Класс телефонной книги формата .json"""
+
+    # Телефонная книга в виде списка
+    _ph_book = []
+
+
+    def __init__(self, filename: str):
+        """Инициализация класса
+
+        :param filename: Имя файла телефонной книги задаваемой по-умолчанию
+        :type filename: str
+        """
+        self._filename = filename
+
+
+    def set_filename(self, filename: str):
+        """Сеттер имени файла телефонной книги
+
+        :param filename: Имя файла телефонной книги задаваемой по-умолчанию
+        :type filename: str
+        """
+        self._filename = filename
+
+
+    def get_filename(self) -> str:
+        """Геттер имени файла телефонной книги с которой работаем
+
+        :return: имя файла телефонной книги с которой работаем
+        :rtype: str
+        """
+        return self._filename
+
+
+    def get_size(self) -> int:
+        """Геттер числа контактов в телефонной книге
+
+        :return: число контактов в телефонной книге
+        :rtype: int
+        """
+        return len(self._ph_book)
+
+
+    def get_contact(self, idx: int) -> {}:
+        """Геттер записи из телефонной книги
+
+        :param idx: индекс записи в телефонной книге
+        :type idx: int
+
+        :return: словарь с записью
+        :rtype: {}
+        """
+        if 0 <= idx <= len(self._ph_book):
+            return self._ph_book[idx]
+        else:
+            return None
+
+
+    def open(self):
+        """Открываем файл телефонной книги и читаем его"""
+        with open(self._filename, 'r', encoding='utf-8') as ph_book_file:
+            self._ph_book = json.load(ph_book_file)
+
+
+    def save(self):
+        """Сохраняем телефонную книгу в формате json"""
+        with open(self._filename, 'w', encoding='utf-8') as ph_book_file:
+            json.dump(self._ph_book, ph_book_file, indent=4, ensure_ascii=False)
+
+
+    def add(self, contact: {}):
+        """Добавление нового контакта в телефонную книгу
+
+        :param contact: словарь с новым контактом
+        :type contact: {}
+        """
+        self._ph_book.append(contact)
+
+    def search(self, search_str: str)->[int]:
+        """Поиск в записях по строке по всем полям телефонной книги
+
+        :param search_str: строка для поиска
+        :type search_str: str
+
+        :return: список индексов контактов, где найдено совпадение
+        :rtype: [int]
+        """
+        # Список индексов записи с результатами поиска
+        contacts = []
+
+        if len(search_str):
+            # Строка для поиска не пустая
+            for idx, contact in enumerate(self._ph_book):
+                # Перебираем все контакты в телефонной книге
+                for i, element in enumerate(list(contact.values())):
+                    # Ищем совпадение строки поиска во всех элементах записи
+                    if element.search(search_str) >= 0:
+                        # Найдено совпадение, добавим в список индекс
+                        contacts.append(idx)
+                        break
+
+        return contacts
+
+
 def open_ph_book():
+    """Открытие файла телефонной книги"""
     cls()
     print_caption(open_ph_book)
-    global ph_book, filename_of_book
+    global ph_book
     # Получаем список файлов
     files_list = glob.glob('*.json')
 
@@ -40,7 +140,7 @@ def open_ph_book():
         input(f'{text.press_enter}')
         return
 
-    for i in range(0, len(files_list)):
+    for i in range(0, len(files_list)):     # !!! Заменить на enumerate
         # Выводим список файлов
         print(f'{i+1} {files_list[i]}')
 
@@ -53,67 +153,62 @@ def open_ph_book():
             if file_num.isdigit() and 0 <= (int(file_num) - 1) < (len(files_list)):
                 # Номер файла корректный
                 file_num = int(file_num) - 1
-                filename_of_book = files_list[file_num]
+                # Имя файла открываемой телефонной книги
+                ph_book.set_filename(files_list[file_num])
                 # Открываем файл
-                with open(filename_of_book, 'r', encoding='utf-8') as ph_book_file:
-                    ph_book = json.load(ph_book_file)
-                return
-        else:
-            # Отказ от открытия файла
-            return
+                ph_book.open()
+        return
 
 
-# Сохраняем телефонную книгу в формате json
 def save_ph_book():
+    """Сохраняем телефонную книгу в формате json"""
     cls()
     print_caption(save_ph_book)
-    save_file(filename_of_book)
+    ph_book.save()
     print(f'{text.save_complete}')
     input(f'{text.press_enter}')
 
 
-# Сохранить телефонную книгу под другим именем
 def save_as_ph_book():
+    """Сохраняем телефонную книгу под другим именем"""
     cls()
     print_caption(save_as_ph_book)
-    global filename_of_book
     new_filename = input(f'{text.save_as_filename}')
 
     if len(new_filename):
         # Имя не пустое
         if new_filename[-5:] != '.json':
             # Пользователь забыл указать расширение, добавим
-            filename_of_book = new_filename + '.json'
+            ph_book.set_filename(new_filename + '.json')
         else:
             # С расширением всё нормально
-            filename_of_book = new_filename
-        save_file(filename_of_book)
+            ph_book.set_filename(new_filename)
 
-
-# Сохраняет файл телефонной книги под именем filename
-def save_file(filename):
-    with open(filename, 'w', encoding = 'utf-8') as ph_book_file:
-        json.dump(ph_book, ph_book_file, indent = 4, ensure_ascii = False)
+        ph_book.save()
 
 
 # Печать всех контактов
 def print_all_contacts():
     cls()
     print_caption(print_all_contacts)
-    for idx, contact in enumerate(ph_book):
+    for idx in range(ph_book.get_size()):
         print_contact(idx)
         print('-' * 20)
     input(f'{text.press_enter}')
 
 
-# Печать одного контакта
-def print_contact(idx):
-    cnt = ph_book[idx]
-    print(f'ID: {idx}\n{text.name}:\t\t\t{cnt['name']}\n{text.phone}:\t{cnt['phone']}\n{text.address}:\t\t\t{cnt['address']}')
+def print_contact(idx: int):
+    """Печать одного контакта
+
+    :param idx: ID контакта в телефонной книге
+    :type idx: int
+    """
+    contact = ph_book.get_contact(idx)
+    print(f'ID: {idx}\n{text.name}:\t\t\t{contact['name']}\n{text.phone}:\t{contact['phone']}\n{text.address}:\t\t\t{contact['address']}')
 
 
-# Ввод нового контакта
 def add_contact():
+    """Ввод нового контакта"""
     cls()
     print_caption(add_contact)
     global ph_book
@@ -129,28 +224,25 @@ def add_contact():
 
     phone = input(f'{text.enter_phone}')
     address = input(f'{text.enter_address}')
-    ph_book.append({'name': new_name, 'phone': phone, 'address': address})
+    ph_book.add({'name': new_name, 'phone': phone, 'address': address})
 
 
-# Поиск контактов
-def find_contact():
+def search_contact():
+    """Запрос строки поиска и поиск по всем контактам с выводом результата"""
     cls()
-    print_caption(find_contact)
+    print_caption(search_contact)
 
-    while True:
-        # Запрос строки для поиска
-        substr = input(f'{text.enter_substr}: ')
+    # Запрос строки для поиска
+    substr = input(f'{text.enter_substr}: ')
 
-        if len(substr):
-            for idx, contact in enumerate(ph_book):
-                for i, element in enumerate(list(contact.values())):
-                    if element.find(substr) >= 0:
-                        print('-' * 20)
-                        print_contact(idx)
-                        break
+    if len(substr):
+        contacts = ph_book.search(substr)
+
+        for idx, contact in enumerate(contacts):
             print('-' * 20)
-        else:
-            break
+            print_contact(idx)
+
+    print('-' * 20)
 
 
 # Редактирование записи
@@ -198,16 +290,16 @@ def delete_contact():
 
 
 # Структура главного меню
-main_menu = ("Телефонная книга",                                None,
-             "Открыть телефонную книгу",                        open_ph_book,
-             "Сохранить телефонную книгу",                      save_ph_book,
-             "Сохранить телефонную книгу с новым именем",       save_as_ph_book,
-             "Показать все контакты",                           print_all_contacts,
-             "Добавить контакт",                                add_contact,
-             "Найти контакт",                                   find_contact,
-             "Изменить контакт",                                change_contact,
-             "Удалить контакт",                                 delete_contact,
-             "Завершить работу",                                None
+main_menu = ("Телефонная книга", None,
+             "Открыть телефонную книгу", open_ph_book,
+             "Сохранить телефонную книгу", save_ph_book,
+             "Сохранить телефонную книгу с новым именем", save_as_ph_book,
+             "Показать все контакты", print_all_contacts,
+             "Добавить контакт", add_contact,
+             "Найти контакт", search_contact,
+             "Изменить контакт", change_contact,
+             "Удалить контакт", delete_contact,
+             "Завершить работу", None
              )
 
 
@@ -221,7 +313,7 @@ def print_menu(menu):
                 print(f'{i//2}. {menu[i]}')
             else:
                 # Выводим название меню и текущей телефонной книги
-                print(f'{menu[0]} {filename_of_book}\n')
+                print(f'{menu[0]} {ph_book.get_filename()}\n')
         # Ожидаем выбора пользователя
         select_function = select_menu(menu)
         if select_function:
@@ -236,6 +328,10 @@ def select_menu(menu):
         menu_choice = input(text.input_menu)
         if menu_choice.isdigit() and 0 < int(menu_choice) < (len(menu) // 2):
             return menu[int(menu_choice) * 2 + 1]
+
+
+# Объект - телефонная книга
+ph_book = PhoneBook('PhBook.json')
 
 
 # Начало программы
