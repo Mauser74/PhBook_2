@@ -100,6 +100,7 @@ class PhoneBook:
         """
         self._ph_book.append(contact)
 
+
     def search(self, search_str: str)->[int]:
         """Поиск в записях по строке по всем полям телефонной книги
 
@@ -118,7 +119,7 @@ class PhoneBook:
                 # Перебираем все контакты в телефонной книге
                 for i, element in enumerate(list(contact.values())):
                     # Ищем совпадение строки поиска во всех элементах записи
-                    if element.search(search_str) >= 0:
+                    if element.find(search_str) >= 0:
                         # Найдено совпадение, добавим в список индекс
                         contacts.append(idx)
                         break
@@ -136,7 +137,7 @@ def open_ph_book():
 
     if len(files_list) == 0:
         # Список файлов телефонной книги пуст
-        print(f'{text.no_files}')
+        print(f'{text.files_not_found}')
         input(f'{text.press_enter}')
         return
 
@@ -238,15 +239,19 @@ def search_contact():
     if len(substr):
         contacts = ph_book.search(substr)
 
-        for idx, contact in enumerate(contacts):
+        if len(contacts):
+            for contact_idx in contacts:
+                print('-' * 20)
+                print_contact(contact_idx)
             print('-' * 20)
-            print_contact(idx)
+        else:
+            print(f'{text.contact_not_found}')
 
-    print('-' * 20)
+    input(f'{text.press_enter}')
 
 
-# Редактирование записи
 def change_contact():
+    """Редактирование записи"""
     cls()
     print_caption(change_contact)
     global ph_book
