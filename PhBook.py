@@ -81,7 +81,16 @@ class PhoneBook:
             return None
 
 
-    def set_contact(self, idx: int) -> None:
+    def set_contact(self, idx: int, contact: {}) -> None:
+        """Записывает по существующему ID данные контакта
+
+        :param idx:
+        :type idx: int
+        :param contact:
+        :type contact: {}
+        """
+        if idx < self.get_size():
+            self._ph_book[idx] = contact
 
 
     def open(self) -> None:
@@ -280,7 +289,7 @@ def change_contact() -> None:
             phone = input(f'{text.enter_new_phone}')
             print(edited_contact['address'])
             address = input(f'{text.enter_new_address}')
-            ph_book.[contact_id] = ({'name': name_of_contact, 'phone': phone, 'address': address})
+            ph_book.set_contact(contact_id, {'name': name_of_contact, 'phone': phone, 'address': address})
 
 
 # Удалить контакт
@@ -315,7 +324,7 @@ main_menu = ("Телефонная книга", None,
 
 
 # Функция печати и выбора пунктов меню
-def print_menu(menu: Tuple[str, ()]):
+def print_menu(menu) -> None:
     while True:
         cls()
         for i in range(0, len(menu), 2):
