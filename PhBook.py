@@ -1,5 +1,6 @@
 # Телефонная книга. Домашнее задание 1
 # Семенов Владимир
+from typing import Callable, Tuple
 
 import text                             # Модуль со строками
 import glob
@@ -8,7 +9,7 @@ import json
 
 
 # Очистка экрана в консольном окне
-def cls():
+def cls() -> None:
     if name == 'nt':                    # Для windows
         _ = system('cls')
     else:                               # Для mac и linux
@@ -16,7 +17,7 @@ def cls():
 
 
 # Печатаем заголовок меню выбранной функции
-def print_caption(f_pointer):
+def print_caption(f_pointer) -> None:
     caption = main_menu[main_menu.index(f_pointer) - 1]
     print(f'{caption}\n' + '-' * len(caption))
 
@@ -29,7 +30,7 @@ class PhoneBook:
     _ph_book = []
 
 
-    def __init__(self, filename: str):
+    def __init__(self, filename: str) -> None:
         """Инициализация класса
 
         :param filename: Имя файла телефонной книги задаваемой по-умолчанию
@@ -38,7 +39,7 @@ class PhoneBook:
         self._filename = filename
 
 
-    def set_filename(self, filename: str):
+    def set_filename(self, filename: str) -> None:
         """Сеттер имени файла телефонной книги
 
         :param filename: Имя файла телефонной книги задаваемой по-умолчанию
@@ -80,19 +81,22 @@ class PhoneBook:
             return None
 
 
-    def open(self):
+    def set_contact(self, idx: int) -> None:
+
+
+    def open(self) -> None:
         """Открываем файл телефонной книги и читаем его"""
         with open(self._filename, 'r', encoding='utf-8') as ph_book_file:
             self._ph_book = json.load(ph_book_file)
 
 
-    def save(self):
+    def save(self) -> None:
         """Сохраняем телефонную книгу в формате json"""
         with open(self._filename, 'w', encoding='utf-8') as ph_book_file:
             json.dump(self._ph_book, ph_book_file, indent=4, ensure_ascii=False)
 
 
-    def add(self, contact: {}):
+    def add(self, contact: {}) -> None:
         """Добавление нового контакта в телефонную книгу
 
         :param contact: словарь с новым контактом
@@ -127,7 +131,7 @@ class PhoneBook:
         return contacts
 
 
-def open_ph_book():
+def open_ph_book() -> None:
     """Открытие файла телефонной книги"""
     cls()
     print_caption(open_ph_book)
@@ -161,7 +165,7 @@ def open_ph_book():
         return
 
 
-def save_ph_book():
+def save_ph_book() -> None:
     """Сохраняем телефонную книгу в формате json"""
     cls()
     print_caption(save_ph_book)
@@ -170,7 +174,7 @@ def save_ph_book():
     input(f'{text.press_enter}')
 
 
-def save_as_ph_book():
+def save_as_ph_book() -> None:
     """Сохраняем телефонную книгу под другим именем"""
     cls()
     print_caption(save_as_ph_book)
@@ -189,7 +193,7 @@ def save_as_ph_book():
 
 
 # Печать всех контактов
-def print_all_contacts():
+def print_all_contacts() -> None:
     cls()
     print_caption(print_all_contacts)
     for idx in range(ph_book.get_size()):
@@ -198,7 +202,7 @@ def print_all_contacts():
     input(f'{text.press_enter}')
 
 
-def print_contact(idx: int):
+def print_contact(idx: int) -> None:
     """Печать одного контакта
 
     :param idx: ID контакта в телефонной книге
@@ -208,7 +212,7 @@ def print_contact(idx: int):
     print(f'ID: {idx}\n{text.name}:\t\t\t{contact['name']}\n{text.phone}:\t{contact['phone']}\n{text.address}:\t\t\t{contact['address']}')
 
 
-def add_contact():
+def add_contact() -> None:
     """Ввод нового контакта"""
     cls()
     print_caption(add_contact)
@@ -228,7 +232,7 @@ def add_contact():
     ph_book.add({'name': new_name, 'phone': phone, 'address': address})
 
 
-def search_contact():
+def search_contact() -> None:
     """Запрос строки поиска и поиск по всем контактам с выводом результата"""
     cls()
     print_caption(search_contact)
@@ -250,7 +254,7 @@ def search_contact():
     input(f'{text.press_enter}')
 
 
-def change_contact():
+def change_contact() -> None:
     """Редактирование записи"""
     cls()
     print_caption(change_contact)
@@ -261,24 +265,26 @@ def change_contact():
         # Отказ редактировать запись
         return
 
-    if contact_id.isdigit() and 0 <= int(contact_id) < (len(ph_book)):
+    if contact_id.isdigit():
         contact_id = int(contact_id)
-        print(ph_book[contact_id]['name'])
-        name_of_contact = input(f'{text.enter_new_name}')
+        if  0 <= contact_id < ph_book.get_size():
+            edited_contact = ph_book.get_contact(contact_id)
+            print(edited_contact['name'])
+            name_of_contact = input(f'{text.enter_new_name}')
 
-        if not len(name_of_contact):
-            # Новое имя контакта пустое, это отказ редактировать запись
-            return
+            if not len(name_of_contact):
+                # Новое имя контакта пустое, это отказ редактировать запись
+                return
 
-        print(ph_book[contact_id]['phone'])
-        phone = input(f'{text.enter_new_phone}')
-        print(ph_book[contact_id]['address'])
-        address = input(f'{text.enter_new_address}')
-        ph_book[contact_id] = ({'name': name_of_contact, 'phone': phone, 'address': address})
+            print(edited_contact['phone'])
+            phone = input(f'{text.enter_new_phone}')
+            print(edited_contact['address'])
+            address = input(f'{text.enter_new_address}')
+            ph_book.[contact_id] = ({'name': name_of_contact, 'phone': phone, 'address': address})
 
 
 # Удалить контакт
-def delete_contact():
+def delete_contact() -> None:
     cls()
     print_caption(delete_contact)
     global ph_book
@@ -309,7 +315,7 @@ main_menu = ("Телефонная книга", None,
 
 
 # Функция печати и выбора пунктов меню
-def print_menu(menu):
+def print_menu(menu: Tuple[str, ()]):
     while True:
         cls()
         for i in range(0, len(menu), 2):
