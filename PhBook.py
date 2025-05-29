@@ -29,7 +29,6 @@ class PhoneBook:
     # Телефонная книга в виде списка
     _ph_book = []
 
-
     def __init__(self, filename: str) -> None:
         """Инициализация класса
 
@@ -79,6 +78,16 @@ class PhoneBook:
             return self._ph_book[idx]
         else:
             return None
+
+
+    def del_contact(self, idx: int) -> None:
+        """Удаляет запись из телефонной книги
+
+        :param idx: индекс удаляемой записи в телефонной книге
+        :type idx: int
+        """
+        if 0 <= idx <= len(self._ph_book):
+            del self._ph_book[idx]
 
 
     def set_contact(self, idx: int, contact: {}) -> None:
@@ -144,7 +153,6 @@ def open_ph_book() -> None:
     """Открытие файла телефонной книги"""
     cls()
     print_caption(open_ph_book)
-    global ph_book
     # Получаем список файлов
     files_list = glob.glob('*.json')
 
@@ -225,7 +233,6 @@ def add_contact() -> None:
     """Ввод нового контакта"""
     cls()
     print_caption(add_contact)
-    global ph_book
 
     while True:
         new_name = input(f'{text.enter_name}')
@@ -267,7 +274,6 @@ def change_contact() -> None:
     """Редактирование записи"""
     cls()
     print_caption(change_contact)
-    global ph_book
     contact_id = input(f'{text.enter_contact_id_edit}: ')
 
     if not len(contact_id):
@@ -294,19 +300,19 @@ def change_contact() -> None:
 
 # Удалить контакт
 def delete_contact() -> None:
+    """Удаление контакта из телефонной книги"""
     cls()
     print_caption(delete_contact)
-    global ph_book
     contact_id = input(f'{text.enter_contact_id_delete}: ')
 
     if not len(contact_id):
         # Отказ удалять запись
         return
 
-    if contact_id.isdigit() and 0 <= int(contact_id) < (len(ph_book)):
+    if contact_id.isdigit():
         contact_id = int(contact_id)
-        del ph_book[contact_id]
-        print(ph_book)
+        if 0 <= contact_id < ph_book.get_size():
+            ph_book.del_contact(contact_id)
 
 
 # Структура главного меню
