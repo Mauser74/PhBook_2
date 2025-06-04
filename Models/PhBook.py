@@ -3,6 +3,7 @@
 
 import glob
 import json
+import View
 
 from View import text
 
