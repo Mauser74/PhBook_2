@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c32474c6-a737-4c8f-9f1a-6d1da2da3166" name="Changes" comment="Добавление метода удаления в класс телефонной книги">
-      <change afterPath="$PROJECT_DIR$/Controller/Menu.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/View/utils.py" afterDir="false" />
+    <list default="true" id="c32474c6-a737-4c8f-9f1a-6d1da2da3166" name="Changes" comment="Более чёткое деление на модули MVC">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PhBook.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/PhBook.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/text.py" beforeDir="false" afterPath="$PROJECT_DIR$/View/text.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/Menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Menu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/PhBook.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/PhBook.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,18 +24,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Mauser74"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Mauser74&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Mauser74/PhBook_2.git",
-    "accountId": "c851f833-16f3-4821-9dc3-329db6a185ac"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Mauser74/PhBook_2.git&quot;,
+    &quot;accountId&quot;: &quot;c851f833-16f3-4821-9dc3-329db6a185ac&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -49,19 +45,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/26663/PycharmProjects/PhBook_2",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Progs/Python/PhBook_2/View&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Progs\Python\PhBook_2\View" />
       <recent name="C:\Users\26663\PycharmProjects\PhBook_2" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -159,7 +156,23 @@
       <option name="project" value="LOCAL" />
       <updated>1748537104380</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Более чёткое деление на модули MVC">
+      <option name="closed" value="true" />
+      <created>1748878004556</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1748878004556</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Более чёткое деление на модули MVC">
+      <option name="closed" value="true" />
+      <created>1749051106288</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1749051106288</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -178,6 +191,7 @@
     <MESSAGE value="Добавлен класс и частично реализован функционал работы с телефонной книгой в классе" />
     <MESSAGE value="Добавление метода редактирования в класс телефонной книги" />
     <MESSAGE value="Добавление метода удаления в класс телефонной книги" />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавление метода удаления в класс телефонной книги" />
+    <MESSAGE value="Более чёткое деление на модули MVC" />
+    <option name="LAST_COMMIT_MESSAGE" value="Более чёткое деление на модули MVC" />
   </component>
 </project>

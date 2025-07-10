@@ -5,7 +5,7 @@ import glob
 import json
 import View
 
-from View import text
+from View import text, cls, print_caption
 
 
 class PhoneBook:
