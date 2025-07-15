@@ -1,4 +1,4 @@
-from Models import PhBook
+from Controller import run_program
 
 if __name__ == '__main__':
-    PhBook.run_program()
+    run_program()

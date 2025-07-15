@@ -1,11 +1,7 @@
 # Телефонная книга. Домашнее задание 1
 # Семенов Владимир
 
-import glob
 import json
-import View
-
-from View import text, cls, print_caption
 
 
 class PhoneBook:
@@ -134,34 +130,34 @@ class PhoneBook:
         return contacts
 
 
-def open_ph_book() -> None:
-    """Открытие файла телефонной книги"""
-    cls()
-    print_caption(open_ph_book)
-    # Получаем список файлов
-    files_list = glob.glob('*.json')
-
-    if len(files_list) == 0:
-        # Список файлов телефонной книги пуст
-        print(f'{text.files_not_found}')
-        input(f'{text.press_enter}')
-        return
-
-    for i in range(0, len(files_list)):     # !!! Заменить на enumerate
-        # Выводим список файлов
-        print(f'{i+1} {files_list[i]}')
-
-    # Запрос номера файла
-    while True:
-        file_num = input(f'\n{text.input_file} (1 - {len(files_list)}): ')
-
-        if len(file_num):
-            # Номер файла выбран
-            if file_num.isdigit() and 0 <= (int(file_num) - 1) < (len(files_list)):
-                # Номер файла корректный
-                file_num = int(file_num) - 1
-                # Имя файла открываемой телефонной книги
-                ph_book.set_filename(files_list[file_num])
-                # Открываем файл
-                ph_book.open()
-        return
+# def open_ph_book() -> None:
+#     """Открытие файла телефонной книги"""
+#     cls()
+#     print_caption(open_ph_book)
+#     # Получаем список файлов
+#     files_list = glob.glob('*.json')
+#
+#     if len(files_list) == 0:
+#         # Список файлов телефонной книги пуст
+#         print(f'{text.files_not_found}')
+#         input(f'{text.press_enter}')
+#         return
+#
+#     for i in range(0, len(files_list)):     # !!! Заменить на enumerate
+#         # Выводим список файлов
+#         print(f'{i+1} {files_list[i]}')
+#
+#     # Запрос номера файла
+#     while True:
+#         file_num = input(f'\n{text.input_file} (1 - {len(files_list)}): ')
+#
+#         if len(file_num):
+#             # Номер файла выбран
+#             if file_num.isdigit() and 0 <= (int(file_num) - 1) < (len(files_list)):
+#                 # Номер файла корректный
+#                 file_num = int(file_num) - 1
+#                 # Имя файла открываемой телефонной книги
+#                 ph_book.set_filename(files_list[file_num])
+#                 # Открываем файл
+#                 ph_book.open()
+#         return

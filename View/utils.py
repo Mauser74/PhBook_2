@@ -10,6 +10,6 @@ def cls() -> None:
 
 
 # Печатаем заголовок меню выбранной функции
-def print_caption(f_pointer, menu: []) -> None:
+def print_caption(menu: [], f_pointer) -> None:
     caption = menu[menu.index(f_pointer) - 1]
     print(f'{caption}\n' + '-' * len(caption))
