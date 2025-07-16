@@ -10,11 +10,13 @@ class PhoneBook:
     # Телефонная книга в виде списка
     _ph_book = []
 
+
     def __init__(self, filename: str) -> None:
         """Инициализация класса
 
         :param filename: Имя файла телефонной книги задаваемой по-умолчанию
         :type filename: str
+        :return: -> None
         """
         self._filename = filename
 
@@ -24,6 +26,7 @@ class PhoneBook:
 
         :param filename: Имя файла телефонной книги задаваемой по-умолчанию
         :type filename: str
+        :return: -> None
         """
         self._filename = filename
 
@@ -66,6 +69,7 @@ class PhoneBook:
 
         :param idx: индекс удаляемой записи в телефонной книге
         :type idx: int
+        :return: -> None
         """
         if 0 <= idx <= len(self._ph_book):
             del self._ph_book[idx]
@@ -78,19 +82,26 @@ class PhoneBook:
         :type idx: int
         :param contact:
         :type contact: {}
+        :return: -> None
         """
         if idx < self.get_size():
             self._ph_book[idx] = contact
 
 
     def open(self) -> None:
-        """Открываем файл телефонной книги и читаем его"""
+        """Открываем файл телефонной книги и читаем его
+
+        :return: -> None
+        """
         with open(self._filename, 'r', encoding='utf-8') as ph_book_file:
             self._ph_book = json.load(ph_book_file)
 
 
     def save(self) -> None:
-        """Сохраняем телефонную книгу в формате json"""
+        """Сохраняем телефонную книгу в формате json
+
+        :return: -> None
+        """
         with open(self._filename, 'w', encoding='utf-8') as ph_book_file:
             json.dump(self._ph_book, ph_book_file, indent=4, ensure_ascii=False)
 
@@ -100,11 +111,12 @@ class PhoneBook:
 
         :param contact: словарь с новым контактом
         :type contact: {}
+        :return: -> None
         """
         self._ph_book.append(contact)
 
 
-    def search(self, search_str: str)->[int]:
+    def search(self, search_str: str) -> [int]:
         """Поиск в записях по строке по всем полям телефонной книги
 
         :param search_str: строка для поиска
@@ -128,36 +140,3 @@ class PhoneBook:
                         break
 
         return contacts
-
-
-# def open_ph_book() -> None:
-#     """Открытие файла телефонной книги"""
-#     cls()
-#     print_caption(open_ph_book)
-#     # Получаем список файлов
-#     files_list = glob.glob('*.json')
-#
-#     if len(files_list) == 0:
-#         # Список файлов телефонной книги пуст
-#         print(f'{text.files_not_found}')
-#         input(f'{text.press_enter}')
-#         return
-#
-#     for i in range(0, len(files_list)):     # !!! Заменить на enumerate
-#         # Выводим список файлов
-#         print(f'{i+1} {files_list[i]}')
-#
-#     # Запрос номера файла
-#     while True:
-#         file_num = input(f'\n{text.input_file} (1 - {len(files_list)}): ')
-#
-#         if len(file_num):
-#             # Номер файла выбран
-#             if file_num.isdigit() and 0 <= (int(file_num) - 1) < (len(files_list)):
-#                 # Номер файла корректный
-#                 file_num = int(file_num) - 1
-#                 # Имя файла открываемой телефонной книги
-#                 ph_book.set_filename(files_list[file_num])
-#                 # Открываем файл
-#                 ph_book.open()
-#         return

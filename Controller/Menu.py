@@ -5,7 +5,14 @@ import glob
 
 class Menu:
     """Класс работы с меню"""
-    def __init__(self, ph_book):
+    def __init__(self, ph_book: PhoneBook):
+        """Конструктор класса
+
+        :param ph_book: экземпляр класса телефонной книги
+        :type ph_book: PhoneBook
+        :return: -> None
+        """
+
         # Структура главного меню
         self.main_menu = (
             "Телефонная книга", None,
@@ -23,12 +30,20 @@ class Menu:
         self.__ph_book = ph_book
 
 
-    def __print_caption(self, f_pointer):
+    def __print_caption(self, f_pointer) -> None:
+        """Получив указатель на функцию печатает название меню относящегося к этой функции как заголовок
+
+        :param f_pointer: указатель на функцию
+        :return: -> None
+        """
         print_caption(self.main_menu, f_pointer)
 
 
     def __open_ph_book(self) -> None:
-        """Открытие файла телефонной книги"""
+        """Открытие файла телефонной книги
+
+        :return: -> None
+        """
         cls()
         self.__print_caption(self.__open_ph_book)
         # Получаем список файлов
@@ -59,8 +74,12 @@ class Menu:
                     self.__ph_book.open()
             return
 
+
     def __save_ph_book(self) -> None:
-        """Сохраняем телефонную книгу в формате json"""
+        """Сохраняем телефонную книгу в формате json
+
+        :return: -> None
+        """
         cls()
         self.__print_caption(self.__save_ph_book)
         self.__ph_book.save()
@@ -69,7 +88,10 @@ class Menu:
 
 
     def __save_as_ph_book(self) -> None:
-        """Сохраняем телефонную книгу под другим именем"""
+        """Сохраняем телефонную книгу под другим именем
+
+        :return: -> None
+        """
         cls()
         self.__print_caption(self.__save_as_ph_book)
         new_filename = input(f'{text.save_as_filename}')
@@ -88,6 +110,10 @@ class Menu:
 
     # Печать всех контактов
     def __print_all_contacts(self) -> None:
+        """Печать всех контактов телефонной книги
+
+        :return: -> None
+        """
         cls()
         self.__print_caption(self.__print_all_contacts)
         for idx in range(self.__ph_book.get_size()):
@@ -101,13 +127,17 @@ class Menu:
 
         :param idx: ID контакта в телефонной книге
         :type idx: int
+        :return: -> None
         """
         contact = self.__ph_book.get_contact(idx)
         print(f'ID: {idx}\n{text.name}:\t\t\t{contact['name']}\n{text.phone}:\t{contact['phone']}\n{text.address}:\t\t\t{contact['address']}')
 
 
     def __add_contact(self) -> None:
-        """Ввод нового контакта"""
+        """Ввод нового контакта
+
+        :return: -> None
+        """
         cls()
         self.__print_caption(self.__add_contact)
 
@@ -126,7 +156,10 @@ class Menu:
 
 
     def __search_contact(self) -> None:
-        """Запрос строки поиска и поиск по всем контактам с выводом результата"""
+        """Запрос строки поиска и поиск по всем контактам с выводом результата
+
+        :return: -> None
+        """
         cls()
         self.__print_caption(self.__search_contact)
 
@@ -148,7 +181,9 @@ class Menu:
 
 
     def __change_contact(self) -> None:
-        """Редактирование записи"""
+        """Редактирование записи
+
+        :return: -> None"""
         cls()
         self.__print_caption(self.__change_contact)
         contact_id = input(f'{text.enter_contact_id_edit}: ')
@@ -176,7 +211,10 @@ class Menu:
 
 
     def __delete_contact(self) -> None:
-        """Удаление контакта из телефонной книги"""
+        """Удаление контакта из телефонной книги
+
+        :return: -> None
+        """
         cls()
         self.__print_caption(self.__delete_contact)
         contact_id = input(f'{text.enter_contact_id_delete}: ')
@@ -192,7 +230,10 @@ class Menu:
 
 
     def print_menu(self) -> None:
-        """Печать и выбор пунктов меню"""
+        """Печать и выбор пунктов меню
+
+        :return: -> None
+        """
         while True:
             cls()
             for i in range(0, len(self.main_menu), 2):
@@ -211,7 +252,10 @@ class Menu:
 
 
     def __select_menu(self):
-        """Выбор пункта меню пользователем"""
+        """Выбор пункта меню пользователем
+
+        :return: -> None
+        """
         while True:
             menu_choice = input(text.input_menu)
             if menu_choice.isdigit() and 0 < int(menu_choice) < (len(self.main_menu) // 2):
@@ -224,6 +268,9 @@ book = PhoneBook('../PhBook.json')
 main_menu = Menu(book)
 
 
-# Начало программы
 def run_program() -> None:
+    """Точка запуска программы
+
+    :return: -> None
+    """
     main_menu.print_menu()
