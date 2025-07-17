@@ -2,6 +2,7 @@
 # Семенов Владимир
 
 import json
+from View import text, press_enter
 
 
 class PhoneBook:
@@ -11,14 +12,20 @@ class PhoneBook:
     _ph_book = []
 
 
-    def __init__(self, filename: str) -> None:
+    def __init__(self) -> None:
         """Инициализация класса
 
-        :param filename: Имя файла телефонной книги задаваемой по-умолчанию
-        :type filename: str
         :return: -> None
         """
-        self._filename = filename
+        self._filename = ""
+
+
+    def clear(self) -> None:
+        """Удаление всех записей из телефонной книги
+
+        :return: None
+        """
+        self._ph_book.clear()
 
 
     def set_filename(self, filename: str) -> None:
@@ -93,8 +100,12 @@ class PhoneBook:
 
         :return: -> None
         """
-        with open(self._filename, 'r', encoding='utf-8') as ph_book_file:
-            self._ph_book = json.load(ph_book_file)
+        try:
+            with open(self._filename, 'r', encoding='utf-8') as ph_book_file:
+                self._ph_book = json.load(ph_book_file)
+        except OSError:
+            print(f"{text.file_open_error}")
+            press_enter()
 
 
     def save(self) -> None:
@@ -102,8 +113,12 @@ class PhoneBook:
 
         :return: -> None
         """
-        with open(self._filename, 'w', encoding='utf-8') as ph_book_file:
-            json.dump(self._ph_book, ph_book_file, indent=4, ensure_ascii=False)
+        try:
+            with open(self._filename, 'w', encoding='utf-8') as ph_book_file:
+                json.dump(self._ph_book, ph_book_file, indent=4, ensure_ascii=False)
+        except OSError:
+            print(f"{text.file_save_error}")
+            press_enter()
 
 
     def add(self, contact: {}) -> None:

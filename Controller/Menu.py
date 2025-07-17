@@ -1,5 +1,5 @@
 from Models import PhoneBook
-from View import cls, print_caption, text
+from View import cls, print_caption, text, press_enter
 import glob
 
 
@@ -16,6 +16,7 @@ class Menu:
         # Структура главного меню
         self.main_menu = (
             "Телефонная книга", None,
+            "Создать новую телефонную книгу", self.__new_ph_book,
             "Открыть телефонную книгу", self.__open_ph_book,
             "Сохранить телефонную книгу", self.__save_ph_book,
             "Сохранить телефонную книгу с новым именем", self.__save_as_ph_book,
@@ -39,6 +40,17 @@ class Menu:
         print_caption(self.main_menu, f_pointer)
 
 
+    def __new_ph_book(self) -> None:
+        """Создаёт новую телефонную книгу
+
+        :return: None
+        """
+        cls()
+        self.__print_caption(self.__new_ph_book)
+        self.__ph_book.clear()
+        self.__save_as_ph_book()
+
+
     def __open_ph_book(self) -> None:
         """Открытие файла телефонной книги
 
@@ -52,7 +64,7 @@ class Menu:
         if len(files_list) == 0:
             # Список файлов телефонной книги пуст
             print(f'{text.files_not_found}')
-            input(f'{text.press_enter}')
+            press_enter()
             return
 
         for i in range(0, len(files_list)):     # !!! Заменить на enumerate
@@ -84,7 +96,7 @@ class Menu:
         self.__print_caption(self.__save_ph_book)
         self.__ph_book.save()
         print(f'{text.save_complete}')
-        input(f'{text.press_enter}')
+        press_enter()
 
 
     def __save_as_ph_book(self) -> None:
@@ -119,7 +131,7 @@ class Menu:
         for idx in range(self.__ph_book.get_size()):
             self.__print_contact(idx)
             print('-' * 20)
-        input(f'{text.press_enter}')
+        press_enter()
 
 
     def __print_contact(self, idx: int) -> None:
@@ -177,7 +189,7 @@ class Menu:
             else:
                 print(f'{text.contact_not_found}')
 
-        input(f'{text.press_enter}')
+        press_enter()
 
 
     def __change_contact(self) -> None:
@@ -242,7 +254,7 @@ class Menu:
                     print(f'{i//2}. {self.main_menu[i]}')
                 else:
                     # Выводим название меню и текущей телефонной книги
-                    print(f'{self.main_menu[0]} {self.__ph_book.get_filename()}\n')
+                    print(f'{self.main_menu[0]} {self.__ph_book.get_filename()} ({self.__ph_book.get_size()} {text.contacts})\n')
             # Ожидаем выбора пользователя
             select_function = self.__select_menu()
             if select_function:
@@ -263,7 +275,7 @@ class Menu:
 
 
 # Объект - телефонная книга
-book = PhoneBook('../PhBook.json')
+book = PhoneBook()
 # Объект - главное меню
 main_menu = Menu(book)
 
