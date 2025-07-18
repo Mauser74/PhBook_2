@@ -47,7 +47,7 @@ class Menu:
         """
         cls()
         self.__print_caption(self.__new_ph_book)
-        self.__ph_book.clear()
+        self.__ph_book.clear_all()
         self.__save_as_ph_book()
 
 

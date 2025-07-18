@@ -2,25 +2,24 @@
 # Семенов Владимир
 
 import json
+
+from Models import Contact
 from View import text, press_enter
 
 
 class PhoneBook:
     """Класс телефонной книги формата .json"""
-
-    # Телефонная книга в виде списка
-    _ph_book = []
-
-
     def __init__(self) -> None:
         """Инициализация класса
 
         :return: -> None
         """
         self._filename = ""
+        # Телефонная книга в виде списка
+        self._ph_book = []
 
 
-    def clear(self) -> None:
+    def clear_all(self) -> None:
         """Удаление всех записей из телефонной книги
 
         :return: None
@@ -56,14 +55,14 @@ class PhoneBook:
         return len(self._ph_book)
 
 
-    def get_contact(self, idx: int) -> {}:
+    def get_contact(self, idx: int) -> (dict, None):
         """Геттер записи из телефонной книги
 
         :param idx: индекс записи в телефонной книге
         :type idx: int
 
         :return: словарь с записью
-        :rtype: {}
+        :rtype: (dict, None)
         """
         if 0 <= idx <= len(self._ph_book):
             return self._ph_book[idx]
@@ -102,7 +101,9 @@ class PhoneBook:
         """
         try:
             with open(self._filename, 'r', encoding='utf-8') as ph_book_file:
-                self._ph_book = json.load(ph_book_file)
+                # self._ph_book = json.load(ph_book_file)
+                data = json.load(ph_book_file)
+                self._ph_book = [Contact.from_dict(contact_data) for contact_data in data]
         except OSError:
             print(f"{text.file_open_error}")
             press_enter()
@@ -114,6 +115,7 @@ class PhoneBook:
         :return: -> None
         """
         try:
+            data = [contact.to_dict() for contact in self._ph_book]
             with open(self._filename, 'w', encoding='utf-8') as ph_book_file:
                 json.dump(self._ph_book, ph_book_file, indent=4, ensure_ascii=False)
         except OSError:
@@ -121,11 +123,11 @@ class PhoneBook:
             press_enter()
 
 
-    def add(self, contact: {}) -> None:
+    def add(self, contact: Contact) -> None:
         """Добавление нового контакта в телефонную книгу
 
         :param contact: словарь с новым контактом
-        :type contact: {}
+        :type contact: Contact
         :return: -> None
         """
         self._ph_book.append(contact)
