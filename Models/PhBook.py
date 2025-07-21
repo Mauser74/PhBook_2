@@ -1,10 +1,57 @@
-# Телефонная книга. Домашнее задание 1
-# Семенов Владимир
-
 import json
 
-from Models import Contact
+#import PhBookDataclass
 from View import text, press_enter
+
+
+# Определение класса Contact, представляет один контакт
+class Contact:
+    def __init__(self, name: str, phone: str, address: str):
+        """Инициализация объекта Contact
+
+        :param name: Имя
+        :param phone: Номер телефона
+        :param address: Адрес
+        """
+        self.name = name
+        self.phone = phone
+        self.address = address
+
+
+    def to_dict(self) -> dict:
+        """Преобразует объект Contact в словарь для JSON
+
+        :return: -> None
+        """
+        return {
+            "name": self.name,
+            "phone": self.phone,
+            "address": self.address
+        }
+
+
+    @classmethod
+    def from_dict(cls, data: dict) -> object:
+        """Создаёт объект Contact из словаря
+
+        :param data: Словарь с данными контакта
+        :return: Объект Contact
+        :rtype: Contact
+        """
+        return cls(
+            name=data.get("name"),
+            phone=data.get("phone"),
+            address=data.get("address")
+        )
+
+
+    def __str__(self) -> str:
+        """Возвращает строковое представление контакта
+
+        :return: Строковое представление контакта
+        :rtype: str
+        """
+        return f'{text.name}:\t\t\t{self.name}\n{text.phone}:\t{self.phone}\n{text.address}:\t\t\t{self.address}'
 
 
 class PhoneBook:
@@ -115,9 +162,11 @@ class PhoneBook:
         :return: -> None
         """
         try:
-            data = [contact.to_dict() for contact in self._ph_book]
+            #data = [contact.to_dict() for contact in self._ph_book]
+            #with open(self._filename, 'w', encoding='utf-8') as ph_book_file:
+            #    json.dump(self._ph_book, ph_book_file, indent=4, ensure_ascii=False)
             with open(self._filename, 'w', encoding='utf-8') as ph_book_file:
-                json.dump(self._ph_book, ph_book_file, indent=4, ensure_ascii=False)
+                json.dump([c.__dict__ for c in self.contacts], ph_book_file, indent=4, ensure_ascii=False)
         except OSError:
             print(f"{text.file_save_error}")
             press_enter()

@@ -1,4 +1,4 @@
-from Models import PhoneBook
+from Models import PhoneBook, Contact
 from View import cls, print_caption, text, press_enter
 import glob
 
@@ -142,7 +142,8 @@ class Menu:
         :return: -> None
         """
         contact = self.__ph_book.get_contact(idx)
-        print(f'ID: {idx}\n{text.name}:\t\t\t{contact['name']}\n{text.phone}:\t{contact['phone']}\n{text.address}:\t\t\t{contact['address']}')
+        print(contact)
+        #print(f'ID: {idx}\n{text.name}:\t\t\t{contact['name']}\n{text.phone}:\t{contact['phone']}\n{text.address}:\t\t\t{contact['address']}')
 
 
     def __add_contact(self) -> None:
@@ -164,7 +165,7 @@ class Menu:
 
         phone = input(f'{text.enter_phone}')
         address = input(f'{text.enter_address}')
-        self.__ph_book.add({'name': new_name, 'phone': phone, 'address': address})
+        self.__ph_book.add({"name": new_name, "phone": phone, "address": address})
 
 
     def __search_contact(self) -> None:

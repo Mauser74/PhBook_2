@@ -1,2 +1,2 @@
-from .PhBook import PhoneBook
-from .PhBookDataclass import Contact
+from .PhBook import PhoneBook, Contact
+# from .PhBookDataclass import Contact
