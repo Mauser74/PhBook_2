@@ -2,7 +2,7 @@ from os import system, name
 from View import text
 
 
-def cls() -> None:
+def clearscreen() -> None:
     """Очистка экрана в консоли в зависимости от операционной системы
 
     :return: -> None

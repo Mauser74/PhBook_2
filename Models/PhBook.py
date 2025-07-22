@@ -1,33 +1,44 @@
 import json
 
-#import PhBookDataclass
+from dataclasses import dataclass
+from typing import Optional
 from View import text, press_enter
 
 
 # Определение класса Contact, представляет один контакт
+@dataclass
 class Contact:
-    def __init__(self, name: str, phone: str, address: str):
-        """Инициализация объекта Contact
+    """
+    Класс абонента телефонной книги.
 
-        :param name: Имя
-        :param phone: Номер телефона
-        :param address: Адрес
-        """
-        self.name = name
-        self.phone = phone
-        self.address = address
+    name (str): Имя абонента.
+    phone (Optional[str]): Номер телефона (необязательный).
+    address (Optional[str]): Адрес абонента (необязательный).
+    """
+    name: str
+    phone: Optional[str] = None
+    address: Optional[str] = None
 
 
     def to_dict(self) -> dict:
         """Преобразует объект Contact в словарь для JSON
 
-        :return: -> None
+        :return: -> Dict
         """
         return {
             "name": self.name,
             "phone": self.phone,
             "address": self.address
         }
+
+
+    def to_tuple(self) -> tuple:
+        """
+        Преобразует объект Contact в список для поиска значений
+
+        :return: -> tuple
+        """
+        return (self.name, self.phone, self.address)
 
 
     @classmethod
@@ -54,6 +65,7 @@ class Contact:
         return f'{text.name}:\t\t\t{self.name}\n{text.phone}:\t{self.phone}\n{text.address}:\t\t\t{self.address}'
 
 
+
 class PhoneBook:
     """Класс телефонной книги формата .json"""
     def __init__(self) -> None:
@@ -77,7 +89,7 @@ class PhoneBook:
     def set_filename(self, filename: str) -> None:
         """Сеттер имени файла телефонной книги
 
-        :param filename: Имя файла телефонной книги задаваемой по-умолчанию
+        :param filename: Имя файла телефонной книги
         :type filename: str
         :return: -> None
         """
@@ -102,14 +114,14 @@ class PhoneBook:
         return len(self._ph_book)
 
 
-    def get_contact(self, idx: int) -> (dict, None):
+    def get_contact(self, idx: int) -> (Contact, None):
         """Геттер записи из телефонной книги
 
         :param idx: индекс записи в телефонной книге
         :type idx: int
 
         :return: словарь с записью
-        :rtype: (dict, None)
+        :rtype: (Contact, None)
         """
         if 0 <= idx <= len(self._ph_book):
             return self._ph_book[idx]
@@ -128,7 +140,7 @@ class PhoneBook:
             del self._ph_book[idx]
 
 
-    def set_contact(self, idx: int, contact: {}) -> None:
+    def set_contact(self, idx: int, contact: Contact) -> None:
         """Записывает по существующему ID данные контакта
 
         :param idx:
@@ -151,8 +163,11 @@ class PhoneBook:
                 # self._ph_book = json.load(ph_book_file)
                 data = json.load(ph_book_file)
                 self._ph_book = [Contact.from_dict(contact_data) for contact_data in data]
-        except OSError:
-            print(f"{text.file_open_error}")
+        except OSError as err:
+            print(f"{text.file_open_error} {err}")
+            press_enter()
+        except json.JSONDecodeError as err:
+            print(f"{text.json_data_error} {err}")
             press_enter()
 
 
@@ -166,9 +181,9 @@ class PhoneBook:
             #with open(self._filename, 'w', encoding='utf-8') as ph_book_file:
             #    json.dump(self._ph_book, ph_book_file, indent=4, ensure_ascii=False)
             with open(self._filename, 'w', encoding='utf-8') as ph_book_file:
-                json.dump([c.__dict__ for c in self.contacts], ph_book_file, indent=4, ensure_ascii=False)
-        except OSError:
-            print(f"{text.file_save_error}")
+                json.dump([c.__dict__ for c in self._ph_book], ph_book_file, indent=4, ensure_ascii=False)
+        except OSError as err:
+            print(f"{text.file_save_error} {err}")
             press_enter()
 
 
@@ -198,7 +213,7 @@ class PhoneBook:
             # Строка для поиска не пустая
             for idx, contact in enumerate(self._ph_book):
                 # Перебираем все контакты в телефонной книге
-                for i, element in enumerate(list(contact.values())):
+                for i, element in enumerate(contact.to_tuple()):
                     # Ищем совпадение строки поиска во всех элементах записи
                     if element.find(search_str) >= 0:
                         # Найдено совпадение, добавим в список индекс

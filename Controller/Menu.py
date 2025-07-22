@@ -1,5 +1,5 @@
 from Models import PhoneBook, Contact
-from View import cls, print_caption, text, press_enter
+from View import clearscreen, print_caption, text, press_enter
 import glob
 
 
@@ -45,7 +45,7 @@ class Menu:
 
         :return: None
         """
-        cls()
+        clearscreen()
         self.__print_caption(self.__new_ph_book)
         self.__ph_book.clear_all()
         self.__save_as_ph_book()
@@ -56,7 +56,7 @@ class Menu:
 
         :return: -> None
         """
-        cls()
+        clearscreen()
         self.__print_caption(self.__open_ph_book)
         # Получаем список файлов
         files_list = glob.glob('*.json')
@@ -92,7 +92,7 @@ class Menu:
 
         :return: -> None
         """
-        cls()
+        clearscreen()
         self.__print_caption(self.__save_ph_book)
         self.__ph_book.save()
         print(f'{text.save_complete}')
@@ -104,7 +104,7 @@ class Menu:
 
         :return: -> None
         """
-        cls()
+        clearscreen()
         self.__print_caption(self.__save_as_ph_book)
         new_filename = input(f'{text.save_as_filename}')
 
@@ -126,7 +126,7 @@ class Menu:
 
         :return: -> None
         """
-        cls()
+        clearscreen()
         self.__print_caption(self.__print_all_contacts)
         for idx in range(self.__ph_book.get_size()):
             self.__print_contact(idx)
@@ -142,8 +142,7 @@ class Menu:
         :return: -> None
         """
         contact = self.__ph_book.get_contact(idx)
-        print(contact)
-        #print(f'ID: {idx}\n{text.name}:\t\t\t{contact['name']}\n{text.phone}:\t{contact['phone']}\n{text.address}:\t\t\t{contact['address']}')
+        print(f'ID: {idx}\n{contact}')
 
 
     def __add_contact(self) -> None:
@@ -151,7 +150,7 @@ class Menu:
 
         :return: -> None
         """
-        cls()
+        clearscreen()
         self.__print_caption(self.__add_contact)
 
         while True:
@@ -160,12 +159,12 @@ class Menu:
             if len(new_name):
                 break
             else:
-                cls()
+                clearscreen()
                 print(text.need_correct_data)
 
         phone = input(f'{text.enter_phone}')
         address = input(f'{text.enter_address}')
-        self.__ph_book.add({"name": new_name, "phone": phone, "address": address})
+        self.__ph_book.add(Contact(new_name, phone, address))
 
 
     def __search_contact(self) -> None:
@@ -173,7 +172,7 @@ class Menu:
 
         :return: -> None
         """
-        cls()
+        clearscreen()
         self.__print_caption(self.__search_contact)
 
         # Запрос строки для поиска
@@ -197,7 +196,7 @@ class Menu:
         """Редактирование записи
 
         :return: -> None"""
-        cls()
+        clearscreen()
         self.__print_caption(self.__change_contact)
         contact_id = input(f'{text.enter_contact_id_edit}: ')
 
@@ -208,7 +207,7 @@ class Menu:
         if contact_id.isdigit():
             contact_id = int(contact_id)
             if  0 <= contact_id < self.__ph_book.get_size():
-                edited_contact = self.__ph_book.get_contact(contact_id)
+                edited_contact = self.__ph_book.get_contact(contact_id).to_dict()
                 print(edited_contact['name'])
                 name_of_contact = input(f'{text.enter_new_name}')
 
@@ -220,7 +219,7 @@ class Menu:
                 phone = input(f'{text.enter_new_phone}')
                 print(edited_contact['address'])
                 address = input(f'{text.enter_new_address}')
-                self.__ph_book.set_contact(contact_id, {'name': name_of_contact, 'phone': phone, 'address': address})
+                self.__ph_book.set_contact(contact_id, Contact(name_of_contact, phone, address))
 
 
     def __delete_contact(self) -> None:
@@ -228,7 +227,7 @@ class Menu:
 
         :return: -> None
         """
-        cls()
+        clearscreen()
         self.__print_caption(self.__delete_contact)
         contact_id = input(f'{text.enter_contact_id_delete}: ')
 
@@ -248,7 +247,7 @@ class Menu:
         :return: -> None
         """
         while True:
-            cls()
+            clearscreen()
             for i in range(0, len(self.main_menu), 2):
                 if i:
                     # Выводим пункты меню и нумеруем их
