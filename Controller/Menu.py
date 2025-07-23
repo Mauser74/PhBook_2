@@ -48,7 +48,18 @@ class Menu:
         clearscreen()
         self.__print_caption(self.__new_ph_book)
         self.__ph_book.clear_all()
-        self.__save_as_ph_book()
+        new_filename = input(f'{text.save_as_filename}')
+
+        if len(new_filename):
+            # Имя не пустое
+            if new_filename[-5:] != '.json':
+                # Пользователь забыл указать расширение, добавим
+                self.__ph_book.set_filename(new_filename + '.json')
+            else:
+                # С расширением всё нормально
+                self.__ph_book.set_filename(new_filename)
+
+            self.__ph_book.save()
 
 
     def __open_ph_book(self) -> None:
@@ -220,6 +231,9 @@ class Menu:
                 print(edited_contact['address'])
                 address = input(f'{text.enter_new_address}')
                 self.__ph_book.set_contact(contact_id, Contact(name_of_contact, phone, address))
+            else:
+                print(f'{text.contact} {text.ID} {contact_id} {text.not_exist}.')
+                press_enter()
 
 
     def __delete_contact(self) -> None:
@@ -239,6 +253,9 @@ class Menu:
             contact_id = int(contact_id)
             if 0 <= contact_id < self.__ph_book.get_size():
                 self.__ph_book.del_contact(contact_id)
+            else:
+                print(f'{text.contact} {text.ID} {contact_id} {text.not_exist}.')
+                press_enter()
 
 
     def print_menu(self) -> None:
